@@ -13,10 +13,45 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   	<junit.version>3.8.1</junit.version>
+  	<mode>DEV</mode>
   </properties>
 
 	<build>
 		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>dev.App</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			 <plugin>
+			 	<groupId>org.apache.maven.plugins</groupId>
+			 	<artifactId>maven-shade-plugin</artifactId>
+			 	 <version>3.0.0</version>
+			 	 <executions>
+			 	 	<execution>
+			 	 		<phase>package</phase>
+			 	 		<goals>
+			 	 			<goal>shade</goal>
+			 	 		</goals>
+			 	 	</execution>
+			 	 </executions>
+			 </plugin> 
+		</plugins>
+		
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 	
 
@@ -28,11 +63,23 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-    <groupId>com.github.lalyos</groupId>
-    <artifactId>jfiglet</artifactId>
+    	<groupId>com.github.lalyos</groupId>
+    	<artifactId>jfiglet</artifactId>
     <version>0.0.3</version>
 </dependency>
   </dependencies>
   
-  
+<profiles>
+  	<profile>
+  		<id>dev</id>
+  		<activation>
+  			<activeByDefault>true</activeByDefault>
+  		</activation>
+  		<properties><mode>DEV</mode></properties>
+  	</profile>
+  	<profile>
+  		<id>prod</id>
+  		<properties><mode>PROD</mode></properties>
+  	</profile>
+ </profiles>
 </project>
